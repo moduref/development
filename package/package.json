@@ -44,5 +44,14 @@
     "name": "Muhamad Syamsudin",
     "email": "udenbaguselord@gmail.com",
     "url": "https://udenbaguse.my.id/"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moduref/development.git",
+    "directory": "package"
+  },
+  "bugs": {
+    "url": "https://github.com/moduref/development/issues"
+  },
+  "homepage": "https://github.com/moduref/development#readme"
 }

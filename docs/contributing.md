@@ -1,6 +1,6 @@
 # Panduan Berkontribusi (Contributing Guide)
 
-Terima kasih atas ketertarikan Anda untuk berkontribusi pada pengembangan **ModuRef**! Dokumen ini memandu Anda dalam menyiapkan lingkungan pengembangan lokal, menjalankan pengujian, dan membuat kontribusi.
+Terima kasih atas ketertarikan Anda untuk berkontribusi pada pengembangan **Moduref**! Dokumen ini memandu Anda dalam menyiapkan lingkungan pengembangan lokal, menjalankan pengujian, dan membuat kontribusi.
 
 ---
 
@@ -18,7 +18,7 @@ Terima kasih atas ketertarikan Anda untuk berkontribusi pada pengembangan **Modu
 
 1. **Clone repositori**:
    ```bash
-   git clone https://github.com/username/moduref.git
+   git clone https://github.com/moduref/development
    cd moduref
    ```
 

@@ -167,4 +167,4 @@ const summary = await referrals.getReferralSummary(userUuid);
 
 ## Skema demo
 
-Demo XAMPP menggunakan schema MySQL di `demo/sql/create-database.sql`. File itu membuat empat kolom referral ditambah kolom email/password yang diperlukan untuk login. Untuk database lama dari schema demo sebelumnya, gunakan `demo/sql/upgrade-v1-to-v2.sql` sekali sebelum menjalankan aplikasi.
+Demo XAMPP menggunakan schema MySQL di `demo/sql/create-database.sql`. File itu membuat empat kolom referral ditambah kolom email/password yang diperlukan untuk login.
