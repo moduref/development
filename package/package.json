@@ -34,5 +34,10 @@
   "license": "MIT",
   "devDependencies": {
     "esbuild": "^0.28.2"
+  },
+  "author": {
+    "name": "Muhamad Syamsudin",
+    "email": "udenbaguselord@gmail.com",
+    "url": "https://udenbaguse.my.id/"
   }
 }
