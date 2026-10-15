@@ -1,6 +1,16 @@
 import { quoteIdentifier } from "../validation.js";
 
-/** Create a transaction-capable adapter for a mysql2/promise pool. */
+/**
+ * Membuat adapter transaksi referral untuk driver `mysql2/promise`.
+ *
+ * @param {any} pool - Instance pool koneksi dari `mysql2/promise` (misal: `mysql.createPool(...)`).
+ * @returns {import("./index.js").ReferralAdapter} Instance adapter MySQL.
+ * @throws {TypeError} Jika pool tidak memiliki method `.execute` atau `.getConnection`.
+ * @example
+ * import mysql from "mysql2/promise";
+ * const pool = mysql.createPool({ host: "localhost", user: "root", database: "app" });
+ * const adapter = createMysqlReferralAdapter(pool);
+ */
 export function createMysqlReferralAdapter(pool) {
   if (!pool || typeof pool.execute !== "function" || typeof pool.getConnection !== "function") {
     throw new TypeError("pool must be a mysql2/promise pool");

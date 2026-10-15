@@ -1,8 +1,16 @@
 import { quoteIdentifier } from "../validation.js";
 
 /**
- * Create an adapter for a better-sqlite3 Database instance. The package does
- * not import the driver; pass an opened database from the application.
+ * Membuat adapter transaksi referral untuk driver `better-sqlite3`.
+ * Menggunakan internal mutex lock (`withDatabaseLock`) dan transaksi `BEGIN IMMEDIATE`.
+ *
+ * @param {any} database - Instance Database yang telah dibuka dari `better-sqlite3` (misal: `new Database("app.db")`).
+ * @returns {import("./index.js").ReferralAdapter} Instance adapter SQLite.
+ * @throws {TypeError} Jika database bukan instance better-sqlite3 yang valid.
+ * @example
+ * import Database from "better-sqlite3";
+ * const db = new Database("app.db");
+ * const adapter = createSqliteReferralAdapter(db);
  */
 export function createSqliteReferralAdapter(database) {
   if (!database || typeof database.prepare !== "function" || typeof database.exec !== "function") {

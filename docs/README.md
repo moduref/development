@@ -1,6 +1,6 @@
-# Dokumentasi ModuRef
+# Dokumentasi Moduref
 
-Selamat datang di dokumentasi resmi **ModuRef** (`moduref`). ModuRef adalah package Node.js ringan untuk mengelola sistem referral berbasis UUID user pada aplikasi Express.js dan database SQL (MySQL, PostgreSQL, SQLite).
+Selamat datang di dokumentasi resmi **Moduref** (`Modujur Referral`). Moduref adalah package Node.js ringan untuk mengelola sistem referral berbasis UUID user pada aplikasi Express.js dan database SQL (MySQL, PostgreSQL, SQLite).
 
 ---
 

@@ -1,3 +1,8 @@
+/**
+ * @module moduref
+ * Package referral Express berbasis UUID dengan adapter untuk MySQL/MariaDB, PostgreSQL, dan SQLite.
+ */
+
 export {
   attachReferralFromRequest,
   clearReferralCookie,

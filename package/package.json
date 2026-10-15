@@ -4,8 +4,12 @@
   "description": "UUID-based referral links and attribution helpers for Express apps and SQL databases",
   "type": "module",
   "main": "./dist/index.js",
+  "types": "./index.d.ts",
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
   "scripts": {
     "build": "esbuild src/index.js --bundle --minify --platform=node --format=esm --external:express --outfile=dist/index.js",
@@ -14,6 +18,7 @@
   },
   "files": [
     "dist",
+    "index.d.ts",
     "README.md",
     "LICENSE"
   ],

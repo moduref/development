@@ -9,7 +9,56 @@ import {
 } from "./validation.js";
 
 /**
- * Build a shareable referral URL from the existing user UUID.
+ * @typedef {Object} CreateReferralUrlOptions
+ * @property {string} baseUrl - Origin URL aplikasi (contoh: "https://example.com" atau "http://localhost:3000").
+ * @property {string} userUuid - UUID pengguna aktif yang membagikan tautan.
+ * @property {string} [path="/referral"] - Prefix path referral (contoh: "/referral").
+ */
+
+/**
+ * @typedef {Object} CreateReferralRouterOptions
+ * @property {string} [registerPath="/register"] - URL tujuan redirect setelah cookie referral berhasil disimpan.
+ * @property {string} [cookieName="referral_uuid"] - Nama cookie untuk menyimpan UUID referral.
+ * @property {number} [cookieMaxAge=2592000000] - Masa berlaku cookie dalam milidetik (default 30 hari).
+ * @property {string} [cookiePath="/"] - Path scope cookie.
+ * @property {"lax" | "strict" | "none"} [cookieSameSite="lax"] - Atribut SameSite cookie.
+ * @property {boolean} [cookieSecure] - Apakah cookie hanya dikirim via HTTPS (otomatis true di production).
+ */
+
+/**
+ * @typedef {Object} GetReferralUuidOptions
+ * @property {string} [cookieName="referral_uuid"] - Nama cookie referral yang dicari.
+ */
+
+/**
+ * @typedef {Object} ClearReferralCookieOptions
+ * @property {string} [cookieName="referral_uuid"] - Nama cookie yang dihapus.
+ * @property {string} [cookiePath="/"] - Scope path cookie.
+ * @property {"lax" | "strict" | "none"} [cookieSameSite="lax"] - Atribut SameSite cookie.
+ * @property {boolean} [cookieSecure] - Flag secure cookie.
+ */
+
+/**
+ * @typedef {Object} AttachReferralFromRequestOptions
+ * @property {any} req - Request object dari Express (memuat header cookies).
+ * @property {string} userUuid - UUID user baru yang baru saja dibuat.
+ * @property {import("./store.js").ReferralStore} store - Instance ReferralStore.
+ * @property {any} [executor] - Koneksi transaksi aktif database.
+ * @property {string} [cookieName="referral_uuid"] - Nama cookie referral.
+ */
+
+/**
+ * Membangun URL tautan referral yang dapat dibagikan oleh pengguna berdasarkan UUID miliknya.
+ *
+ * @param {CreateReferralUrlOptions} options - Opsi pembuatan URL referral.
+ * @returns {string} URL referral lengkap (contoh: "https://example.com/referral/<uuid>").
+ * @throws {TypeError} Jika userUuid bukan UUID valid, baseUrl tidak valid, atau mengandung kredensial.
+ * @example
+ * const referralLink = createReferralUrl({
+ *   baseUrl: "https://example.com",
+ *   userUuid: loggedInUser.uuid,
+ * });
+ * // Output: "https://example.com/referral/123e4567-e89b-12d3-a456-426614174000"
  */
 export function createReferralUrl({ baseUrl, userUuid, path = "/referral" }) {
   const uuid = assertUuid(userUuid, "userUuid");
@@ -26,8 +75,17 @@ export function createReferralUrl({ baseUrl, userUuid, path = "/referral" }) {
 }
 
 /**
- * Return an Express router to mount at `/referral`. Every valid link replaces
- * the prior referral cookie, with a 30-day default lifetime.
+ * Mengembalikan Express Router untuk rute `/:referrerUuid`.
+ * Setiap kunjungan ke tautan referral valid akan menyimpan/memperbarui cookie referral (default 30 hari)
+ * dan mengarahkan pengguna (`302 redirect`) ke halaman pendaftaran.
+ *
+ * @param {CreateReferralRouterOptions} [options] - Opsi konfigurasi router dan cookie.
+ * @returns {express.Router} Express Router yang siap dipasang di aplikasi via `app.use("/referral", router)`.
+ * @example
+ * app.use("/referral", createReferralRouter({
+ *   registerPath: "/register",
+ *   cookieMaxAge: 30 * 24 * 60 * 60 * 1000,
+ * }));
  */
 export function createReferralRouter({
   registerPath = "/register",
@@ -62,7 +120,19 @@ export function createReferralRouter({
   return router;
 }
 
-/** Read and validate the referral cookie from an Express request. */
+/**
+ * Membaca dan memvalidasi UUID referral langsung dari header `cookie` request Express.
+ * Tidak memerlukan middleware pihak ketiga seperti `cookie-parser`.
+ *
+ * @param {any} req - Request object dari Express.
+ * @param {GetReferralUuidOptions} [options]
+ * @returns {string | null} UUID pengundang lowercase jika ditemukan, atau `null` jika tidak ada/tidak valid.
+ * @example
+ * const referrerUuid = getReferralUuid(req);
+ * if (referrerUuid) {
+ *   console.log("Pengguna mendaftar melalui referral:", referrerUuid);
+ * }
+ */
 export function getReferralUuid(req, { cookieName = DEFAULT_COOKIE_NAME } = {}) {
   validateCookieName(cookieName);
   const cookieHeader = req?.headers?.cookie;
@@ -83,7 +153,16 @@ export function getReferralUuid(req, { cookieName = DEFAULT_COOKIE_NAME } = {}) 
   return null;
 }
 
-/** Clear the referral cookie after the registration transaction commits. */
+/**
+ * Menghapus cookie referral dari browser klien setelah proses registrasi berhasil di-commit.
+ *
+ * @param {any} res - Response object dari Express.
+ * @param {ClearReferralCookieOptions} [options]
+ * @returns {any}
+ * @example
+ * await connection.commit();
+ * clearReferralCookie(res);
+ */
 export function clearReferralCookie(res, options = {}) {
   const cookie = resolveCookieSettings(options);
   return res.clearCookie(cookie.cookieName, {
@@ -95,8 +174,18 @@ export function clearReferralCookie(res, options = {}) {
 }
 
 /**
- * Read the pending referral cookie and link it to a user created by the app.
- * Call this within the transaction that inserts the user.
+ * Membaca cookie referral dari request pendaftaran dan langsung menautkannya ke akun pengguna baru.
+ * Disarankan dipanggil di dalam blok transaksi pembuatan akun pengguna.
+ *
+ * @param {AttachReferralFromRequestOptions} options
+ * @returns {Promise<import("./store.js").AttachResult>} Hasil penautan referral.
+ * @example
+ * await attachReferralFromRequest({
+ *   req,
+ *   userUuid: newUserUuid,
+ *   store: referrals,
+ *   executor: dbConnection,
+ * });
  */
 export async function attachReferralFromRequest({
   req,

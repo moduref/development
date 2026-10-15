@@ -1,6 +1,16 @@
 import { quoteIdentifier } from "../validation.js";
 
-/** Create a transaction-capable adapter for a node-postgres Pool. */
+/**
+ * Membuat adapter transaksi referral untuk driver PostgreSQL (`pg` / `node-postgres`).
+ *
+ * @param {any} pool - Instance `Pool` dari package `pg` (misal: `new Pool({ ... })`).
+ * @returns {import("./index.js").ReferralAdapter} Instance adapter PostgreSQL.
+ * @throws {TypeError} Jika pool tidak memiliki method `.query` atau `.connect`.
+ * @example
+ * import { Pool } from "pg";
+ * const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+ * const adapter = createPostgresReferralAdapter(pool);
+ */
 export function createPostgresReferralAdapter(pool) {
   if (!pool || typeof pool.query !== "function" || typeof pool.connect !== "function") {
     throw new TypeError("pool must be a node-postgres Pool");
