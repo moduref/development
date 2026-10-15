@@ -1,0 +1,16 @@
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: local-root-password
+      MYSQL_DATABASE: moduref_demo
+      MYSQL_USER: moduref
+      MYSQL_PASSWORD: moduref-local
+    ports:
+      - "3307:3306"
+    volumes:
+      - moduref_mysql_data:/var/lib/mysql
+
+volumes:
+  moduref_mysql_data:

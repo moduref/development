@@ -1,0 +1,38 @@
+{
+  "name": "moduref",
+  "version": "0.1.0",
+  "description": "UUID-based referral links and attribution helpers for Express apps and SQL databases",
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "esbuild src/index.js --bundle --minify --platform=node --format=esm --external:express --outfile=dist/index.js",
+    "prepublishOnly": "npm run test && npm run build",
+    "test": "node --test"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20.6"
+  },
+  "peerDependencies": {
+    "express": ">=4.18 <6"
+  },
+  "keywords": [
+    "referral",
+    "express",
+    "mysql",
+    "postgresql",
+    "sqlite",
+    "uuid"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}

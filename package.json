@@ -1,0 +1,20 @@
+{
+  "name": "moduref",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.6"
+  },
+  "workspaces": [
+    "package",
+    "demo"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace package",
+    "test": "npm run test --workspace package",
+    "start": "npm run build && npm run start --workspace demo",
+    "db:up": "docker compose -f demo/compose.yaml up -d db",
+    "db:down": "docker compose -f demo/compose.yaml down"
+  }
+}
