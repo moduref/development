@@ -31,3 +31,11 @@ Jika ingin memakai database Docker, salin `demo/.env.docker.example` ke `demo/.e
 ## Package
 
 Source package ada di [`package`](package/README.md). Adapter bawaan mendukung MySQL/MariaDB, PostgreSQL, dan SQLite.
+
+## Dokumentasi Lengkap
+
+Panduan dan dokumentasi teknis lanjutan tersedia di folder [**`docs/`**](docs/README.md):
+- [Arsitektur & Konsep Dasar](docs/architecture.md)
+- [Referensi API Lengkap](docs/api-reference.md)
+- [Adapter Database & Custom Adapter](docs/database-adapters.md)
+- [Panduan Berkontribusi & Development](docs/contributing.md)
