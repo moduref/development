@@ -28,9 +28,11 @@ Database hasil import sudah berisi struktur yang dibutuhkan. Aplikasi memeriksa 
 
 Jika ingin memakai database Docker, salin `demo/.env.docker.example` ke `demo/.env`, lalu jalankan `npm run db:up` dan `npm start`. Docker menerbitkan port MySQL di `3307` agar tidak bentrok dengan MySQL XAMPP di `3306`. Selesai mencoba, jalankan `npm run db:down`.
 
-## Package
+## Packages
 
-Source package ada di [`package`](package/README.md). Adapter bawaan mendukung MySQL/MariaDB, PostgreSQL, dan SQLite.
+Moduref tersedia untuk dua ekosistem backend utama:
+- **Node.js (NPM)**: [`package/`](package/README.md) (`npm install moduref`) — murni ESM dengan driver MySQL2, pg, better-sqlite3, Prisma, dan Drizzle.
+- **PHP (Composer)**: [`moduref-php/`](moduref-php/README.md) (`composer require moduref/moduref`) — PHP 8.1+ dengan PDO (MySQL, PostgreSQL, SQLite) dan dukungan framework seperti Laravel, Symfony, serta Native PHP.
 
 ## Dokumentasi Lengkap
 
@@ -39,3 +41,5 @@ Panduan dan dokumentasi teknis lanjutan tersedia di folder [**`docs/`**](docs/RE
 - [Referensi API Lengkap](docs/api-reference.md)
 - [Adapter Database & Custom Adapter](docs/database-adapters.md)
 - [Panduan Berkontribusi & Development](docs/contributing.md)
+- [Web Dokumentasi Interaktif (Datastar)](web-docs/index.html)
+- []

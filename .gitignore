@@ -3,3 +3,6 @@ node_modules/
 demo/.env
 npm-debug.log*
 package/dist/
+web-docs/
+web-docs.zip
+composer.phar

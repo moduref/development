@@ -1,0 +1,54 @@
+{
+  "name": "moduref/moduref",
+  "description": "Lightweight referral engine based on existing user UUIDs with transactional row-locking in PHP.",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Muhamad Syamsudin",
+      "homepage": "https://udenbaguse.my.id/"
+    }
+  ],
+  "homepage": "https://github.com/moduref/development",
+  "keywords": [
+    "referral",
+    "affiliate",
+    "uuid",
+    "attribution",
+    "reward",
+    "points",
+    "pdo",
+    "mysql",
+    "postgres",
+    "sqlite",
+    "laravel"
+  ],
+  "require": {
+    "php": ">=8.1"
+  },
+  "suggest": {
+    "ext-pdo": "Required for database storage adapters",
+    "ext-pdo_mysql": "Required for MySQL database adapter",
+    "ext-pdo_pgsql": "Required for PostgreSQL database adapter",
+    "ext-pdo_sqlite": "Required for SQLite database adapter"
+  },
+  "autoload": {
+    "psr-4": {
+      "Moduref\\": "src/"
+    },
+    "files": [
+      "src/functions.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Moduref\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "php tests/run.php",
+    "build": "php build.php"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
