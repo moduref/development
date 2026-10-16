@@ -1,0 +1,12 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: moduref-php-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: moduref_demo
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./sql/schema-mysql.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro

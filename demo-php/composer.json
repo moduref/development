@@ -1,0 +1,12 @@
+{
+  "name": "moduref/demo-php",
+  "description": "Demo interaktif aplikasi referral berbasis PHP Native & PDO Moduref",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "php": ">=8.1"
+  },
+  "scripts": {
+    "start": "php -S 127.0.0.1:8000 index.php"
+  }
+}

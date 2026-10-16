@@ -6,10 +6,15 @@ namespace Moduref;
 
 final class ReferralSummary
 {
+    public readonly int $totalReferrals;
+    public readonly ?string $referrerUuid;
+
     public function __construct(
         public readonly int $referralPoints,
         public readonly ?string $referralAttribution,
     ) {
+        $this->totalReferrals = $this->referralPoints;
+        $this->referrerUuid = $this->referralAttribution;
     }
 
     /**

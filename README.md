@@ -34,12 +34,28 @@ Moduref tersedia untuk dua ekosistem backend utama:
 - **Node.js (NPM)**: [`package/`](package/README.md) (`npm install moduref`) — murni ESM dengan driver MySQL2, pg, better-sqlite3, Prisma, dan Drizzle.
 - **PHP (Composer)**: [`moduref-php/`](moduref-php/README.md) (`composer require moduref/moduref`) — PHP 8.1+ dengan PDO (MySQL, PostgreSQL, SQLite) dan dukungan framework seperti Laravel, Symfony, serta Native PHP.
 
+## Demos & Contoh Aplikasi
+
+Moduref menyediakan aplikasi demo interaktif siap pakai untuk kedua ekosistem:
+- **PHP Demo**: [`demo-php/`](demo-php/README.md) — Aplikasi referral PHP Native & PDO (otomatis menggunakan SQLite tanpa setup, atau MySQL via `.env`).
+- **Node.js Demo**: [`demo/`](demo/README.md) — Aplikasi referral Express.js & MySQL (tersedia setup Docker Compose).
+
 ## Dokumentasi Lengkap
 
-Panduan dan dokumentasi teknis lanjutan tersedia di folder [**`docs/`**](docs/README.md):
-- [Arsitektur & Konsep Dasar](docs/architecture.md)
-- [Referensi API Lengkap](docs/api-reference.md)
-- [Adapter Database & Custom Adapter](docs/database-adapters.md)
-- [Panduan Berkontribusi & Development](docs/contributing.md)
-- [Web Dokumentasi Interaktif (Datastar)](web-docs/index.html)
-- []
+### Dokumentasi PHP (`docs-php/`)
+Panduan dan dokumentasi teknis PHP tersedia di folder [**`docs-php/`**](docs-php/README.md):
+- [Arsitektur & Konsep Dasar (PHP)](docs-php/architecture.md)
+- [Referensi API Lengkap (PHP)](docs-php/api-reference.md)
+- [Adapter Database & PDO (PHP)](docs-php/database-adapters.md)
+- [Integrasi Framework (Laravel, Symfony, CI4, Native)](docs-php/framework-integration.md)
+- [Panduan Berkontribusi & Development (PHP)](docs-php/contributing.md)
+
+### Dokumentasi Node.js (`docs/`)
+Panduan dan dokumentasi teknis Node.js tersedia di folder [**`docs/`**](docs/README.md):
+- [Arsitektur & Konsep Dasar (Node.js)](docs/architecture.md)
+- [Referensi API Lengkap (Node.js)](docs/api-reference.md)
+- [Adapter Database & Custom Adapter (Node.js)](docs/database-adapters.md)
+- [Panduan Berkontribusi & Development (Node.js)](docs/contributing.md)
+
+### Web Dokumentasi Interaktif
+- [Web Dokumentasi Interaktif Datastar (PHP & Node.js)](web-docs/index.html)

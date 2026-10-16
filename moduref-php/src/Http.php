@@ -56,9 +56,16 @@ final class Http
      * @return string|null UUID pengundang lowercase jika ditemukan, atau null jika tidak ada/tidak valid.
      */
     public static function getReferralUuid(
-        string $cookieName = Constants::DEFAULT_COOKIE_NAME,
+        string|array $cookieNameOrCookies = Constants::DEFAULT_COOKIE_NAME,
         ?array $cookies = null
     ): ?string {
+        if (is_array($cookieNameOrCookies)) {
+            $cookies = $cookieNameOrCookies;
+            $cookieName = Constants::DEFAULT_COOKIE_NAME;
+        } else {
+            $cookieName = $cookieNameOrCookies;
+        }
+
         Validation::validateCookieName($cookieName);
 
         $source = $cookies ?? $_COOKIE;

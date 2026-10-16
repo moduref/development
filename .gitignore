@@ -6,3 +6,5 @@ package/dist/
 web-docs/
 web-docs.zip
 composer.phar
+*.sqlite
+*.sqlite*

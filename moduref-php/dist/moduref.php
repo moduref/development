@@ -421,10 +421,15 @@ namespace Moduref {
     // --- File: ReferralSummary.php ---
     final class ReferralSummary
     {
+        public readonly int $totalReferrals;
+        public readonly ?string $referrerUuid;
+    
         public function __construct(
             public readonly int $referralPoints,
             public readonly ?string $referralAttribution,
         ) {
+            $this->totalReferrals = $this->referralPoints;
+            $this->referrerUuid = $this->referralAttribution;
         }
     
         /**
@@ -649,9 +654,16 @@ namespace Moduref {
          * @return string|null UUID pengundang lowercase jika ditemukan, atau null jika tidak ada/tidak valid.
          */
         public static function getReferralUuid(
-            string $cookieName = Constants::DEFAULT_COOKIE_NAME,
+            string|array $cookieNameOrCookies = Constants::DEFAULT_COOKIE_NAME,
             ?array $cookies = null
         ): ?string {
+            if (is_array($cookieNameOrCookies)) {
+                $cookies = $cookieNameOrCookies;
+                $cookieName = Constants::DEFAULT_COOKIE_NAME;
+            } else {
+                $cookieName = $cookieNameOrCookies;
+            }
+    
             Validation::validateCookieName($cookieName);
     
             $source = $cookies ?? $_COOKIE;
@@ -767,6 +779,9 @@ namespace Moduref {
      */
     final class Moduref
     {
+        public const COOKIE_NAME = Constants::DEFAULT_COOKIE_NAME;
+        public const COOKIE_MAX_AGE = Constants::DEFAULT_COOKIE_MAX_AGE;
+    
         /**
          * Membangun URL tautan referral lengkap.
          */
@@ -777,10 +792,33 @@ namespace Moduref {
     
         /**
          * Membaca UUID referral dari cookies.
+         * Menerima ($cookieName, $cookies) atau ($cookies, $cookieName).
+         *
+         * @param string|array<string, string> $cookieNameOrCookies
+         * @param array<string, string>|string|null $cookiesOrName
          */
-        public static function getUuid(string $cookieName = Constants::DEFAULT_COOKIE_NAME, ?array $cookies = null): ?string
+        public static function getUuid(string|array $cookieNameOrCookies = Constants::DEFAULT_COOKIE_NAME, array|string|null $cookiesOrName = null): ?string
         {
+            if (is_array($cookieNameOrCookies)) {
+                $cookies = $cookieNameOrCookies;
+                $cookieName = is_string($cookiesOrName) ? $cookiesOrName : Constants::DEFAULT_COOKIE_NAME;
+                return Http::getReferralUuid($cookieName, $cookies);
+            }
+    
+            $cookieName = $cookieNameOrCookies;
+            $cookies = is_array($cookiesOrName) ? $cookiesOrName : null;
             return Http::getReferralUuid($cookieName, $cookies);
+        }
+    
+        /**
+         * Alias ergonomis untuk getUuid().
+         *
+         * @param string|array<string, string> $cookieNameOrCookies
+         * @param array<string, string>|string|null $cookiesOrName
+         */
+        public static function getCookieUuid(string|array $cookieNameOrCookies = Constants::DEFAULT_COOKIE_NAME, array|string|null $cookiesOrName = null): ?string
+        {
+            return self::getUuid($cookieNameOrCookies, $cookiesOrName);
         }
     
         /**
@@ -797,6 +835,56 @@ namespace Moduref {
             string $sameSite = 'Lax',
         ): bool {
             return Http::setReferralCookie($referrerUuid, $cookieName, $maxAge, $path, $domain, $secure, $httpOnly, $sameSite);
+        }
+    
+        /**
+         * Memeriksa apakah string merupakan format UUID yang valid (RFC 4122).
+         */
+        public static function isValidUuid(?string $uuid): bool
+        {
+            return Validation::normalizeUuid($uuid) !== null;
+        }
+    
+        /**
+         * Menghasilkan string UUID v4 acak kriptografis via random_bytes.
+         */
+        public static function generateUuid(): string
+        {
+            $data = random_bytes(16);
+            $data[6] = chr((ord($data[6]) & 0x0f) | 0x40);
+            $data[8] = chr((ord($data[8]) & 0x3f) | 0x80);
+            return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+        }
+    
+        /**
+         * Membaca cookie referral dari request lalu otomatis menautkannya ke store database.
+         */
+        public static function attachFromRequest(
+            string $userUuid,
+            ReferralStore $store,
+            string $cookieName = Constants::DEFAULT_COOKIE_NAME,
+            ?array $cookies = null
+        ): AttachResult {
+            return Http::attachReferralFromRequest($userUuid, $store, $cookieName, $cookies);
+        }
+    
+        /**
+         * Helper alternatif: Menautkan referral dari array cookie kustom.
+         *
+         * @param array<string, string> $cookies
+         * @param string $userUuid
+         * @param ReferralStore $store
+         * @param object|null $executor Koneksi transaksi aktif opsional.
+         * @param string $cookieName
+         */
+        public static function attachFromCookie(
+            array $cookies,
+            string $userUuid,
+            ReferralStore $store,
+            ?object $executor = null,
+            string $cookieName = Constants::DEFAULT_COOKIE_NAME
+        ): AttachResult {
+            return Http::attachReferralFromRequest($userUuid, $store, $cookieName, $cookies);
         }
     
         /**
